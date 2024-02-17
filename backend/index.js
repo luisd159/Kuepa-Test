@@ -3,6 +3,7 @@ const cors = require("cors");
 const { connect } = require("./db_connection/config");
 require("dotenv").config();
 const userRoutes = require("./user/user.routes");
+const chatRoutes = require("./chat/chat.routes");
 
 
 const app = express();
@@ -18,6 +19,7 @@ app.use(express.json());
 
 //Routes
 app.use("/users", userRoutes);
+app.use("/chats", chatRoutes);
 
 // Endpoint for 404
 app.use((req, res) => {
