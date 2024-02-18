@@ -83,15 +83,16 @@ async function findUserByID(req, res) {
 async function GetUserByUserAndPass(req, res) {
     try {
         const userFinded = await user.findOne({ user: req.query.username });
-        console.log(userFinded);
         if (userFinded == null) {
             res.status(500).json({ "message": "User not found" });
+        }else{
+            const isPasswordValid = await bcrypt.compare(req.query.password, userFinded.password);
+            if (!isPasswordValid) {
+                res.status(500).json({ "message": "Password is incorrect" });
+            }else{
+                res.status(200).json(userFinded);
+            }
         }
-        const isPasswordValid = await bcrypt.compare(req.query.password, userFinded.password);
-        if (!isPasswordValid) {
-            res.status(500).json({ "message": "Password is incorrect" });
-        }
-        res.status(200).json(userFinded);
     } catch (error) {
         res.status(500).json({ "message": error.message });
     }
