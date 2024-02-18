@@ -85,7 +85,7 @@ async function GetUserByUserAndPass(req, res) {
         const userFinded = await user.findOne({ user: req.query.username });
         console.log(userFinded);
         if (userFinded == null) {
-            res.status(500).json({ "error": "User not found" });
+            res.status(500).json({ "message": "User not found" });
         }
         const isPasswordValid = await bcrypt.compare(req.query.password, userFinded.password);
         if (!isPasswordValid) {
