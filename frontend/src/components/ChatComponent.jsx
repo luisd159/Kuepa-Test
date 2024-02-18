@@ -7,29 +7,44 @@ import axios from "axios";
 const url = `${URL_BASE}/chats`;
 
 function ChatComponent() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = async () => {};
-  const [chat, setChat] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const data = localStorage.getItem("userData");
+  const userInfo = JSON.parse(data);
 
   const fetchChat = async () => {
     const response = await axios.get(url);
-    setChat(response.data);
+    setMessages(response.data);
   };
 
   useEffect(() => {
     fetchChat();
   }, []);
 
-  console.log(chat);
+  console.log({ messages });
 
   return (
     <div className="flex flex-col">
-      <div className="w-full h-[80vh]">chat here</div>
+      <div className="w-full h-[80vh]">
+        {messages.length > 0 ? (
+          <ul>
+            {messages.map((c) => {
+              return (
+                <li
+                  key={c.id}
+                  className={"my-2 p-2 ml-3 table text-sm rounded-md"}
+                >
+                  {c.name}: {c.message}
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <div>No Message Yet</div>
+        )}
+      </div>
       <div className="w-full h-[20vh]">
         <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-wrap">
