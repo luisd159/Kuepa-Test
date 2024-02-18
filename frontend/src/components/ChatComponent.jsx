@@ -16,11 +16,16 @@ function ChatComponent() {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post(url, {
+      let info = {
+        _id: userInfo.id,
         name: userInfo.name,
         message: data.text,
         role: userInfo.role,
-      });
+        createdAt: new Date(),
+      };
+      socket.emit("message", info);
+      setMessages((current) => [...current, info]);
+      await axios.post(url, info);
     } catch (error) {
       enqueueSnackbar(error.response.data.message + ". Try with some new.", {
         variant: "error",
@@ -41,19 +46,18 @@ function ChatComponent() {
     socket.connect();
 
     socket.on("message", (data) => {
-      messages.push(data);
+      setMessages((current) => [...current, data]);
     });
 
     return () => {
       socket.disconnect();
+      socket.off("message");
     };
   }, []);
 
-  console.log({ messages });
-
   return (
     <div className="flex flex-col">
-      <div className="w-full h-[80vh]">
+      <div className="w-full h-[80vh] overflow-y-auto">
         {messages.length > 0 ? (
           <ul>
             {messages.map((c) => {
@@ -83,7 +87,7 @@ function ChatComponent() {
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                 placeholder="Type Your Text Here"
-                {...register("text", { required: true, maxLength: 20 })}
+                {...register("text", { required: true })}
               />
             </div>
             <div className="w-3/12 w-lvh pl-3">

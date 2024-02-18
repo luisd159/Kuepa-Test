@@ -25,6 +25,10 @@ serverSocket.listen(process.env.PORT, ()=>{
 io.on('connection', socket =>{
   console.log("Client connected");
 
+  socket.on('message', (data)=> {
+    socket.broadcast.emit("message",data);
+  });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected');
   });

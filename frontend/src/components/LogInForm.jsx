@@ -25,7 +25,6 @@ function LogInForm() {
       localStorage.setItem("userData", JSON.stringify(response.data));
       navigate("/");
     } catch (error) {
-      console.log(error);
       enqueueSnackbar(error.response.data.message + ". Try Again.", {
         variant: "error",
       });

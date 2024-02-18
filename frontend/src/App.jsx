@@ -19,8 +19,6 @@ function App() {
     }
   }, []);
 
-  console.log({ user });
-
   const logout = () => {
     localStorage.removeItem("userData");
     enqueueSnackbar("User Logged-out successfully", { variant: "success" });
