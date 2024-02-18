@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
+import { URL_BASE } from "../constants";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { URL_BASE } from "../constants";
 import { useSnackbar } from "notistack";
 
 const url = `${URL_BASE}/users/auth`;
