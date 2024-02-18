@@ -17,7 +17,7 @@ function ChatComponent() {
   const onSubmit = async (data) => {
     try {
       const info = {
-        _id: userInfo.id,
+        _id: userInfo._id,
         name: userInfo.name,
         message: data.text,
         role: userInfo.role,
@@ -63,13 +63,13 @@ function ChatComponent() {
 
   return (
     <div className="flex flex-col">
-      <div className="w-full h-[calc(100vh_-_134px)] overflow-y-scroll">
+      <div className="w-full h-[calc(100vh_-_422px)] lg:h-[calc(100vh_-_134px)] overflow-y-scroll">
         {messages.length > 0 ? (
           <ul className="w-full p-3">
             {messages.map((c) => {
               return (
                 <li
-                  key={c._id}
+                  key={c.createdAt}
                   className={` my-2 p-2 ml-3 table text-sm rounded-md max-w-[200px] break-all ${
                     c.name == userInfo.name
                       ? `bg-sky-700 ml-auto`
@@ -91,27 +91,25 @@ function ChatComponent() {
             <div ref={dummy} />
           </ul>
         ) : (
-          <div>No Message Yet</div>
+          <div className="flex justify-center items-center py-4">
+            <p className="font-bold">No messages yet...</p>
+          </div>
         )}
       </div>
       <div className="flex items-center w-full h-[70px]">
-        <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-wrap">
-            <div className="w-9/12 w-lvh pl-3">
-              <input
-                className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
-                placeholder="Type Your Text Here"
-                {...register("text", { required: true })}
-              />
-            </div>
-            <div className="w-3/12 w-lvh pl-3">
-              <button
-                className="shadow bg-blue-950 hover:bg-blue-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                type="submit"
-              >
-                Send
-              </button>
-            </div>
+        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-row p-2 gap-3">
+            <input
+              className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
+              placeholder="Type your text here..."
+              {...register("text", { required: true })}
+            />
+            <button
+              className="shadow bg-blue-950 hover:bg-blue-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+              type="submit"
+            >
+              Send
+            </button>
           </div>
         </form>
       </div>

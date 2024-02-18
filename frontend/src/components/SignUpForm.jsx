@@ -15,6 +15,7 @@ const SignUpForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  console.log({ errors });
 
   const onSubmit = async (data) => {
     try {
@@ -31,9 +32,9 @@ const SignUpForm = () => {
   return (
     <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-wrap -mx-3 mb-6">
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="grid-first-name"
           >
             Name
@@ -41,45 +42,69 @@ const SignUpForm = () => {
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
             {...register("name", {
-              required: true,
-              pattern: /^[a-zA-Z\s\.]*$/i,
+              required: "This is required*",
+              pattern: {
+                value: /^[a-zA-Z\s\.]*$/i,
+                message: "Can not include numbers",
+              },
             })}
           />
+          {errors.name && (
+            <span className="text-[10px] text-red-300">
+              {errors.name.message}
+            </span>
+          )}
         </div>
       </div>
       <div className="flex flex-wrap -mx-3 mb-6">
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="grid-first-name"
           >
             User
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            {...register("user", { required: true, maxLength: 20 })}
+            {...register("user", {
+              required: "This is required*",
+              maxLength: 20,
+            })}
           />
+          {errors.user && (
+            <span className="text-[10px] text-red-300">
+              {errors.user.message}
+            </span>
+          )}
         </div>
       </div>
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="grid-password"
           >
             Password
           </label>
           <input
             type="password"
-            className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            {...register("password", { required: true, maxLength: 20 })}
+            className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+            {...register("password", {
+              required: "This is required*",
+              maxLength: 20,
+            })}
           />
+          {errors.password && (
+            <span className="text-[10px] text-red-300">
+              {errors.password.message}
+            </span>
+          )}
         </div>
       </div>
       <div className="flex flex-wrap -mx-3 mb-2">
         <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="role"
           >
             Role
@@ -104,15 +129,13 @@ const SignUpForm = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-6">
-        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-          <button
-            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-6"
-            type="submit"
-          >
-            Register
-          </button>
-        </div>
+      <div className="flex flex-wrap justify-center -mx-3 mb-6">
+        <button
+          className="shadow bg-blue-600 hover:bg-blue-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-6"
+          type="submit"
+        >
+          Register
+        </button>
       </div>
     </form>
   );

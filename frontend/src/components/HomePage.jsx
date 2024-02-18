@@ -4,11 +4,11 @@ import VideoComponent from "./VideoComponent";
 
 function HomePage() {
   return (
-    <div className="flex flex-row h-[calc(100%_-_64px)]">
-      <div className="flex justify-center items-center w-[calc(100%_-_400px)]">
+    <div className="flex flex-col lg:flex-row w-full h-[calc(100%_-_64px)]">
+      <div className="flex justify-center items-center w-full lg:w-[calc(100%_-_400px)] bg-gray-900">
         <VideoComponent />
       </div>
-      <div className="w-[400px] bg-slate-300">
+      <div className="w-full lg:w-[400px] bg-slate-300">
         <ChatComponent />
       </div>
     </div>

@@ -6,6 +6,8 @@ function VideoComponent() {
     <ReactPlayer
       controls={true}
       url="https://www.youtube.com/watch?v=jhd1XsuQabw"
+      height={288}
+      width={512}
     />
   );
 }

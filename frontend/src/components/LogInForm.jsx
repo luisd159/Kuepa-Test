@@ -34,23 +34,31 @@ function LogInForm() {
   return (
     <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-wrap -mx-3 mb-6">
-        <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+        <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="grid-first-name"
           >
             User
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            {...register("username", { required: true, maxLength: 20 })}
+            {...register("username", {
+              required: "This is required*",
+              maxLength: 20,
+            })}
           />
+          {errors.username && (
+            <span className="text-[10px] text-red-300">
+              {errors.username.message}
+            </span>
+          )}
         </div>
       </div>
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full px-3">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
             htmlFor="grid-password"
           >
             Password
@@ -58,19 +66,25 @@ function LogInForm() {
           <input
             type="password"
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            {...register("password", { required: true, maxLength: 20 })}
+            {...register("password", {
+              required: "This is required*",
+              maxLength: 20,
+            })}
           />
+          {errors.password && (
+            <span className="text-[10px] text-red-300">
+              {errors.password.message}
+            </span>
+          )}
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-6">
-        <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-          <button
-            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-6"
-            type="submit"
-          >
-            Log In
-          </button>
-        </div>
+      <div className="flex flex-wrap justify-center -mx-3 mb-6">
+        <button
+          className="shadow bg-blue-600 hover:bg-blue-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-6"
+          type="submit"
+        >
+          Log In
+        </button>
       </div>
     </form>
   );
