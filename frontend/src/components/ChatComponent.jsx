@@ -69,7 +69,7 @@ function ChatComponent() {
             {messages.map((c) => {
               return (
                 <li
-                  key={c.id}
+                  key={c._id}
                   className={` my-2 p-2 ml-3 table text-sm rounded-md max-w-[200px] break-all ${
                     c.name == userInfo.name
                       ? `bg-sky-700 ml-auto`
