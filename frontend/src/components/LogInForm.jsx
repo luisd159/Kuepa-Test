@@ -18,12 +18,16 @@ function LogInForm() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.get(url, data);
-      console.log(response.data);
+      console.log(data);
+      const response = await axios.get(url, {
+        params: { username: data.username, password: data.password },
+      });
       enqueueSnackbar("User Logged successfully", { variant: "success" });
+      localStorage.setItem("userData", JSON.stringify(response.data));
       navigate("/");
     } catch (error) {
-      enqueueSnackbar(error.response.data.message + ". Try with some new.", {
+      console.log(error);
+      enqueueSnackbar(error.response.data.message + ". Try Again.", {
         variant: "error",
       });
     }
