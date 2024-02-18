@@ -18,17 +18,22 @@ async function getUsers(req, res) {
 //Creating new users
 async function createNewUser(req, res) {
     try {
-        const newUSer = await user.insertMany({
-            name: req.body.name,
-            password: await bcrypt.hash(req.body.password, 10),
-            user: req.body.user,
-            role: req.body.role
-        })
-        if (newUSer.length == 0) {
-            res.status(500).json({ "message": "Error creating user" })
-        } else {
-            res.status(200).json(newUSer);
-        }
+        const userExist = await user.findOne({user: req.body.user});
+        if(userExist){
+            res.status(500).json({ "message": "User Already Exist" })
+        }else{
+            const newUSer = await user.insertMany({
+                name: req.body.name,
+                password: await bcrypt.hash(req.body.password, 10),
+                user: req.body.user,
+                role: req.body.role
+            })
+            if (newUSer.length == 0) {
+                res.status(500).json({ "message": "Error creating user" })
+            } else {
+                res.status(200).json(newUSer);
+            }
+        } 
     } catch (error) {
         res.status(500).json({ "message": error.message })
     }
