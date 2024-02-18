@@ -26,10 +26,12 @@ function App() {
   };
 
   return (
-    <main>
-      <div className="flex flex-raw justify-between m-5">
-        <h1> Welcome {user?.name}</h1>
-        <button onClick={logout}>Log-Out</button>
+    <main className="h-screen overflow-hidden">
+      <div className="flex flex-raw justify-between p-5 h-16 bg-blue-950">
+        <h1 className="text-white font-semibold">Welcome {user?.name}</h1>
+        <button className="text-white font-semibold underline" onClick={logout}>
+          Logout
+        </button>
       </div>
       <HomePage />
     </main>

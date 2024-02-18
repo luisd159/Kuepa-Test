@@ -63,21 +63,28 @@ function ChatComponent() {
 
   return (
     <div className="flex flex-col">
-      <div className="w-full h-[80vh] overflow-y-auto">
+      <div className="w-full h-[calc(100vh_-_134px)] overflow-y-scroll">
         {messages.length > 0 ? (
-          <ul>
+          <ul className="w-full p-3">
             {messages.map((c) => {
               return (
                 <li
                   key={c.id}
-                  className={` my-2 p-2 ml-3 table text-sm rounded-md ${
+                  className={` my-2 p-2 ml-3 table text-sm rounded-md max-w-[200px] break-all ${
                     c.name == userInfo.name
                       ? `bg-sky-700 ml-auto`
                       : `bg-red-400`
                   }`}
                 >
-                  {`${c.role == "Moderator" ? "Mod " + c.name : c.name}`}:{" "}
-                  {c.message}
+                  {c.role == "Moderator" && (
+                    <>
+                      <span className="text-[8px] font-semibold">
+                        Moderator
+                      </span>
+                      <br />
+                    </>
+                  )}
+                  <span className="font-semibold">{c.name}: </span> {c.message}
                 </li>
               );
             })}
@@ -87,7 +94,7 @@ function ChatComponent() {
           <div>No Message Yet</div>
         )}
       </div>
-      <div className="w-full h-[20vh]">
+      <div className="flex items-center w-full h-[70px]">
         <form className="w-full max-w-lg" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-wrap">
             <div className="w-9/12 w-lvh pl-3">
@@ -99,7 +106,7 @@ function ChatComponent() {
             </div>
             <div className="w-3/12 w-lvh pl-3">
               <button
-                className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                className="shadow bg-blue-950 hover:bg-blue-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 type="submit"
               >
                 Send
