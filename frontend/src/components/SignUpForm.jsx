@@ -17,15 +17,15 @@ const SignUpForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const userInfo = await axios.post(url, data);
       console.log(userInfo.data);
       enqueueSnackbar("User registered successfully", { variant: "success" });
       navigate("/login");
     } catch (error) {
-      console.log(error.message);
-      enqueueSnackbar("This User Already Exist.", { variant: "error" });
+      enqueueSnackbar(error.response.data.message + ". Try with some new.", {
+        variant: "error",
+      });
     }
   };
 
