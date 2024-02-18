@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { URL_BASE } from "../constants";
 import { useSnackbar } from "notistack";
 
+const url = `${URL_BASE}/users/auth`;
+
 function LogInForm() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -15,7 +17,16 @@ function LogInForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      const response = await axios.get(url, data);
+      console.log(response.data);
+      enqueueSnackbar("User Logged successfully", { variant: "success" });
+      navigate("/");
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message + ". Try with some new.", {
+        variant: "error",
+      });
+    }
   };
 
   return (
@@ -30,7 +41,7 @@ function LogInForm() {
           </label>
           <input
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            {...register("user", { required: true, maxLength: 20 })}
+            {...register("username", { required: true, maxLength: 20 })}
           />
         </div>
       </div>

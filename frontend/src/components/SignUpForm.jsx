@@ -18,8 +18,7 @@ const SignUpForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const userInfo = await axios.post(url, data);
-      console.log(userInfo.data);
+      await axios.post(url, data);
       enqueueSnackbar("User registered successfully", { variant: "success" });
       navigate("/login");
     } catch (error) {
