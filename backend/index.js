@@ -2,15 +2,32 @@ const express = require("express");
 const cors = require("cors");
 const { connect } = require("./db_connection/config");
 require("dotenv").config();
+const http = require('http');
+const { Server } = require("socket.io"); 
 const userRoutes = require("./user/user.routes");
 const chatRoutes = require("./chat/chat.routes");
 
 
 const app = express();
+const serverSocket = http.createServer(app);
+const io = new Server(serverSocket, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE"]
+  }  
+});
 
 connect();
-app.listen(process.env.PORT, ()=>{
+serverSocket.listen(process.env.PORT, ()=>{
     console.log("App Listened at", process.env.PORT);
+});
+
+io.on('connection', socket =>{
+  console.log("Client connected");
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
 });
 
 // Middlewares

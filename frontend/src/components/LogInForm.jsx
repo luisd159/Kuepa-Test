@@ -18,7 +18,6 @@ function LogInForm() {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
       const response = await axios.get(url, {
         params: { username: data.username, password: data.password },
       });

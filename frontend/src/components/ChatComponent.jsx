@@ -3,16 +3,30 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { URL_BASE } from "../constants";
 import axios from "axios";
+import { socket } from "../socket";
 
 const url = `${URL_BASE}/chats`;
 
 function ChatComponent() {
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async () => {};
   const [messages, setMessages] = useState([]);
-  const data = localStorage.getItem("userData");
-  const userInfo = JSON.parse(data);
+  const infoUser = localStorage.getItem("userData");
+  const userInfo = JSON.parse(infoUser);
+
+  const onSubmit = async (data) => {
+    try {
+      await axios.post(url, {
+        name: userInfo.name,
+        message: data.text,
+        role: userInfo.role,
+      });
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message + ". Try with some new.", {
+        variant: "error",
+      });
+    }
+  };
 
   const fetchChat = async () => {
     const response = await axios.get(url);
@@ -21,6 +35,18 @@ function ChatComponent() {
 
   useEffect(() => {
     fetchChat();
+  }, []);
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("message", (data) => {
+      messages.push(data);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   console.log({ messages });
@@ -34,9 +60,14 @@ function ChatComponent() {
               return (
                 <li
                   key={c.id}
-                  className={"my-2 p-2 ml-3 table text-sm rounded-md"}
+                  className={` my-2 p-2 ml-3 table text-sm rounded-md ${
+                    c.name == userInfo.name
+                      ? `bg-sky-700 ml-auto`
+                      : `bg-red-400`
+                  }`}
                 >
-                  {c.name}: {c.message}
+                  {`${c.role == "Moderator" ? "Mod " + c.name : c.name}`}:{" "}
+                  {c.message}
                 </li>
               );
             })}
@@ -52,7 +83,7 @@ function ChatComponent() {
               <input
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white"
                 placeholder="Type Your Text Here"
-                {...register("username", { required: true, maxLength: 20 })}
+                {...register("text", { required: true, maxLength: 20 })}
               />
             </div>
             <div className="w-3/12 w-lvh pl-3">
