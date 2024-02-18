@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { URL_BASE } from "../constants";
 import axios from "axios";
 import { socket } from "../socket";
@@ -8,7 +8,7 @@ import { socket } from "../socket";
 const url = `${URL_BASE}/chats`;
 
 function ChatComponent() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const [messages, setMessages] = useState([]);
   const infoUser = localStorage.getItem("userData");
@@ -16,7 +16,7 @@ function ChatComponent() {
 
   const onSubmit = async (data) => {
     try {
-      let info = {
+      const info = {
         _id: userInfo.id,
         name: userInfo.name,
         message: data.text,
@@ -26,6 +26,7 @@ function ChatComponent() {
       socket.emit("message", info);
       setMessages((current) => [...current, info]);
       await axios.post(url, info);
+      reset();
     } catch (error) {
       enqueueSnackbar(error.response.data.message + ". Try with some new.", {
         variant: "error",
@@ -37,6 +38,11 @@ function ChatComponent() {
     const response = await axios.get(url);
     setMessages(response.data);
   };
+
+  const dummy = useRef(null);
+  useEffect(() => {
+    dummy.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     fetchChat();
@@ -75,6 +81,7 @@ function ChatComponent() {
                 </li>
               );
             })}
+            <div ref={dummy} />
           </ul>
         ) : (
           <div>No Message Yet</div>
