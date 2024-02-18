@@ -10,6 +10,13 @@ const chatSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        role: {
+            type: String,
+            enum: {
+                values: ["Student", "Moderator"],
+                message: '{VALUE} is not supported'
+            }
+        },
     },
     {
         timestamps: true,

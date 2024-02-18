@@ -19,7 +19,8 @@ async function createMessage(req, res) {
     try {
         const newMessage = await chat.insertMany({
             name: req.body.name,
-            message: req.body.message
+            message: req.body.message,
+            role: req.body.role
         })
         if (newMessage.length == 0) {
             res.status(500).json({ "message": "Error creating Message" })
